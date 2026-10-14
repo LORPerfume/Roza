@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>روزا · عطور الشعر</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="عطور شعر إيلورا ميلانو المستوحاة من أشهر العطور العالمية. ثبات وفوحان ٤٨ ساعة، ٢٠٠ مل، بفيتامين E وبروتين الحرير. كل عبوة بـ 20$. اطلبي عبر إنستغرام.">
+<meta property="og:title" content="روزا · عطور الشعر من إيلورا">
+<meta property="og:description" content="٩ عطور شعر تحاكي العطور العالمية + بخاخ فك تشابك للأطفال. كل عبوة بـ 20$.">
+<meta property="og:image" content="assets/img/collection.webp">
+<meta name="theme-color" content="#2a1430">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Readex+Pro:wght@300;400;500;600&family=Pinyon+Script&family=Cormorant+Garamond:wght@500;600&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <a class="brand" href="#top" aria-label="روزا، الصفحة الرئيسية">
+      <svg class="brand__crown" viewBox="0 0 32 18" aria-hidden="true"><path d="M2 16 L4 4 L10 10 L16 1 L22 10 L28 4 L30 16 Z" /></svg>
+      <span class="brand__word">ROSA</span>
+      <span class="brand__sub">Hair &amp; More</span>
+    </a>
+    <nav class="topnav" aria-label="أقسام الموقع">
+      <a href="#shop">المتجر</a>
+      <a href="#finder">اختاري عطرك</a>
+      <a href="#how">طريقة الطلب</a>
+    </nav>
+    <button class="cartbtn" id="cartOpen" type="button" aria-label="فتح السلة">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span class="cartbtn__count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas class="hero__mist" id="mist" aria-hidden="true"></canvas>
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">Elura Milano · Italian Formula</p>
+        <h1 class="hero__title">
+          <span class="ln">عطرك المفضّل</span>
+          <span class="ln ln--accent">صار لشعرك</span>
+        </h1>
+        <p class="hero__lead">تسع عطور شعر من إيلورا تحاكي أشهر العطور العالمية. ثبات وفوحان حتى ٤٨ ساعة، مع فيتامين E وبروتين الحرير، وبدون سلفات.</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#shop">تسوّقي العطور</a>
+          <a class="btn btn--ghost" href="https://ig.me/m/roza.76981" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+            راسلينا
+          </a>
+        </div>
+        <dl class="hero__facts">
+          <div><dt>السعر</dt><dd><b>20$</b> للعبوة</dd></div>
+          <div><dt>الحجم</dt><dd><b>200</b> مل</dd></div>
+          <div><dt>الثبات</dt><dd><b>48</b> ساعة</dd></div>
+        </dl>
+      </div>
+      <figure class="hero__art">
+        <div class="arch">
+          <img src="assets/img/collection.webp" alt="مجموعة عطور الشعر التسعة من إيلورا مع العطور العالمية التي تحاكيها" width="1000" height="1000" fetchpriority="high">
+        </div>
+        <div class="seal" aria-hidden="true">
+          <svg viewBox="0 0 120 120"><defs><path id="circ" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#circ">HAIR PERFUME · 200 ML · ELURA MILANO · </textPath></text></svg>
+          <span>20$</span>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="ribbon" aria-label="العطور العالمية التي تحاكيها مجموعتنا">
+    <div class="ribbon__track" id="ribbon"></div>
+  </div>
+
+  <!-- BENEFITS -->
+  <section class="benefits wrap" aria-label="مميزات عطور الشعر">
+    <div class="benefit">
+      <span class="benefit__k">E</span>
+      <h3>فيتامين E</h3>
+      <p>يغذّي الشعر ويحميه من الجفاف.</p>
+    </div>
+    <div class="benefit">
+      <span class="benefit__k">Silk</span>
+      <h3>بروتين الحرير</h3>
+      <p>نعومة ولمعان من أول رشّة.</p>
+    </div>
+    <div class="benefit">
+      <span class="benefit__k">0%</span>
+      <h3>بدون سلفات</h3>
+      <p>لطيف على الشعر المصبوغ والحساس.</p>
+    </div>
+    <div class="benefit">
+      <span class="benefit__k">48h</span>
+      <h3>فوحان يدوم</h3>
+      <p>رائحة تلحقك طول اليوم وأكثر.</p>
+    </div>
+  </section>
+
+  <!-- FINDER + SHOP -->
+  <section class="shop" id="shop">
+    <div class="wrap">
+      <header class="sechead" id="finder">
+        <p class="eyebrow">المجموعة الكاملة</p>
+        <h2>شو بيشبهك اليوم؟</h2>
+        <p class="sechead__lead">اختاري المزاج، ونحن منرشّحلك العطر. كل العبوات بنفس السعر: <b>20$</b>.</p>
+      </header>
+      <div class="chips" role="tablist" aria-label="تصفية حسب نوع الرائحة" id="chips"></div>
+      <div class="grid" id="grid" aria-live="polite"></div>
+      <p class="disclaimer">أسماء العطور العالمية مذكورة للتعريف بالطابع العطري فقط، ومنتجات إيلورا غير تابعة لهذه العلامات.</p>
+    </div>
+  </section>
+
+  <!-- HOW TO ORDER -->
+  <section class="how" id="how">
+    <div class="wrap how__grid">
+      <div>
+        <p class="eyebrow">طريقة الطلب</p>
+        <h2>ثلاث خطوات وبيوصلك عطرك</h2>
+      </div>
+      <ol class="steps">
+        <li><b>اختاري عطورك</b><span>ضيفي اللي بيعجبك على السلة وحددي الكمية.</span></li>
+        <li><b>اضغطي «اطلبي عبر إنستغرام»</b><span>منجهّزلك رسالة الطلب وننسخها تلقائياً.</span></li>
+        <li><b>الصقي الرسالة وأرسليها</b><span>بتنفتح محادثة <span dir="ltr">@roza.76981</span> ومنتفق معك على التوصيل.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq wrap" aria-label="أسئلة شائعة">
+    <details>
+      <summary>كيف بستعمل عطر الشعر؟</summary>
+      <p>رشّيه على شعر ناشف أو رطب من مسافة ٢٠ سم تقريباً، وركّزي على الأطراف. فيكي تجدّدي الرشّة بأي وقت خلال النهار.</p>
+    </details>
+    <details>
+      <summary>هل بيأذي الشعر المصبوغ؟</summary>
+      <p>التركيبة خالية من السلفات وفيها فيتامين E وبروتين الحرير، فهي لطيفة على الشعر المصبوغ.</p>
+    </details>
+    <details>
+      <summary>كيف بيتم الدفع والتوصيل؟</summary>
+      <p>بعد ما توصلنا رسالتك على إنستغرام منأكدلك الطلب ومنتفق سوا على طريقة الدفع والتوصيل لمنطقتك.</p>
+    </details>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <div class="brand brand--foot">
+      <svg class="brand__crown" viewBox="0 0 32 18" aria-hidden="true"><path d="M2 16 L4 4 L10 10 L16 1 L22 10 L28 4 L30 16 Z" /></svg>
+      <span class="brand__word">ROSA</span>
+      <span class="brand__sub">Hair &amp; More</span>
+    </div>
+    <p>دلّعي شعرك بعطور إيلورا 🎀</p>
+    <a class="foot__ig" href="https://instagram.com/roza.76981" target="_blank" rel="noopener" dir="ltr">@roza.76981</a>
+  </div>
+</footer>
+
+<!-- Floating IG -->
+<a class="fab" href="https://ig.me/m/roza.76981" target="_blank" rel="noopener" aria-label="راسلينا على إنستغرام">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+</a>
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__scrim" data-close></div>
+  <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="iconbtn modal__x" type="button" data-close aria-label="إغلاق">✕</button>
+    <div class="modal__media"><img id="mImg" alt=""></div>
+    <div class="modal__body">
+      <p class="pname" id="mEn"></p>
+      <h3 id="mTitle"></h3>
+      <p class="insp" id="mInsp"></p>
+      <p id="mDesc"></p>
+      <ul class="notes" id="mNotes"></ul>
+      <ul class="specs" id="mSpecs"></ul>
+      <div class="modal__buy">
+        <div class="qty" aria-label="الكمية">
+          <button type="button" id="mMinus" aria-label="إنقاص">−</button>
+          <output id="mQty">1</output>
+          <button type="button" id="mPlus" aria-label="زيادة">+</button>
+        </div>
+        <button class="btn btn--primary" type="button" id="mAdd">أضيفي للسلة · <span id="mPrice">$20</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer__scrim" data-close></div>
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="cTitle">
+    <header class="drawer__head">
+      <h3 id="cTitle">سلّتك</h3>
+      <button class="iconbtn" type="button" data-close aria-label="إغلاق السلة">✕</button>
+    </header>
+    <div class="drawer__body">
+      <ul class="lines" id="lines"></ul>
+      <div class="empty" id="empty">
+        <p>السلة فاضية لهلّق.</p>
+        <button class="btn btn--ghost" type="button" data-close data-goto="#shop">تصفّحي العطور</button>
+      </div>
+      <form class="who" id="who" autocomplete="on">
+        <label for="fName">الاسم <small>(اختياري)</small></label>
+        <input id="fName" name="name" type="text" placeholder="مثلاً: ريم">
+        <label for="fCity">المدينة / المنطقة <small>(اختياري)</small></label>
+        <input id="fCity" name="city" type="text" placeholder="مثلاً: دمشق، المزة">
+      </form>
+    </div>
+    <footer class="drawer__foot">
+      <div class="total"><span>المجموع</span><b id="total">0$</b></div>
+      <a class="btn btn--ig" id="orderBtn" href="https://ig.me/m/roza.76981" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+        اطلبي عبر إنستغرام
+      </a>
+      <p class="hint">منفتحلك محادثة إنستغرام ومننسخ رسالة الطلب. بس الصقيها واضغطي إرسال.</p>
+      <details class="preview">
+        <summary>شوفي رسالة الطلب</summary>
+        <pre id="msgPreview"></pre>
+        <button class="btn btn--ghost btn--sm" type="button" id="copyBtn">نسخ الرسالة</button>
+      </details>
+    </footer>
+  </aside>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
