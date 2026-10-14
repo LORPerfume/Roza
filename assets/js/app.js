@@ -5,6 +5,7 @@
   const IG_DM = `https://ig.me/m/${IG_USER}`;
   const PRICE = 20;
   const IMG = (id) => `assets/img/${id}.webp`;
+  const BTL = (id) => (id === 'happy-hair' ? IMG(id) : `assets/img/bottles/${id}.webp`);
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const FAMILIES = [
@@ -98,8 +99,14 @@
   const cardHTML = (p) => {
     const insp = p.insp ? `<p class="insp">مستوحى من <b>${esc(p.insp)}</b></p>` : '';
     const tag = p.kids ? '<span class="tag">جديد · للأطفال</span>' : (p.alcoholFree ? '<span class="tag">خالٍ من الكحول</span>' : '');
-    const media = `<button class="card__media" type="button" data-open="${p.id}" aria-label="تفاصيل ${esc(p.en)}">
-        <img src="${IMG(p.id)}" alt="${esc(p.en)} من إيلورا" loading="lazy" width="1000" height="1000">
+    const media = p.kids
+      ? `<button class="card__media" type="button" data-open="${p.id}" aria-label="تفاصيل ${esc(p.en)}">
+        <img src="${IMG(p.id)}" alt="${esc(p.en)} من إيلورا كيدز" loading="lazy">
+        ${tag}<span class="quick">عرض التفاصيل</span></button>`
+      : `<button class="card__media card__media--bottle" type="button" data-open="${p.id}" aria-label="تفاصيل ${esc(p.en)}">
+        <span class="ghost" aria-hidden="true">${esc(p.en)}</span>
+        <img class="btl" src="${BTL(p.id)}" alt="عبوة ${esc(p.en)} من إيلورا" loading="lazy">
+        <span class="shine" aria-hidden="true"></span>
         ${tag}<span class="quick">عرض التفاصيل</span></button>`;
     const buy = `<div class="card__buy">
         <span class="price">$${PRICE}<small>للعبوة</small></span>
@@ -175,7 +182,12 @@
   function openModal(id) {
     const p = byId[id]; mId = id; mQty = 1;
     $('.modal__card', modal).style.setProperty('--tint', p.tint);
-    $('#mImg').src = IMG(id); $('#mImg').alt = `${p.en} من إيلورا`;
+    $('#mImg').hidden = !!p.kids; $('#mImg').src = BTL(id); $('#mImg').alt = `عبوة ${p.en}`;
+    $('#mPost').src = IMG(id); $('#mPost').alt = p.kids ? `${p.en} من إيلورا كيدز` : `${p.en} مقارنة مع ${p.insp}`;
+    $('#mPost').hidden = !p.kids;
+    $('#mGhost').textContent = p.kids ? '' : p.en;
+    $('.viewtoggle').hidden = !!p.kids;
+    document.querySelectorAll('.viewtoggle button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.view === 'bottle')));
     $('#mEn').textContent = p.en;
     $('#mTitle').textContent = p.ar;
     $('#mInsp').innerHTML = p.insp ? `مستوحى من <b>${esc(p.insp)}</b>` : 'من مجموعة Elura Kids';
@@ -204,7 +216,14 @@
     copy(url).then((ok) => toast(ok ? 'نسخنا رابط العطر ✓ شاركيه مع صحباتك' : url, 4000));
   };
   $('#mAdd').onclick = (e) => { burst(e.currentTarget, byId[mId].tint); addToCart(mId, mQty); hide(modal); toast(`انضاف ${byId[mId].en} × ${mQty} للسلة`); };
-  modal.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) hide(modal); });
+  modal.addEventListener('click', (e) => {
+    if (e.target.closest('[data-close]')) { hide(modal); return; }
+    const v = e.target.closest('[data-view]');
+    if (v) {
+      document.querySelectorAll('.viewtoggle button').forEach((b) => b.setAttribute('aria-selected', String(b === v)));
+      $('#mPost').hidden = v.dataset.view !== 'post';
+    }
+  });
 
   /* drawer */
   const drawer = $('#drawer');
@@ -225,7 +244,7 @@
     $('#lines').innerHTML = ids.map((id) => {
       const p = byId[id], n = cart[id];
       return `<li class="line">
-        <img src="${IMG(id)}" alt="" width="64" height="64">
+        <img src="${BTL(id)}" alt="" width="64" height="64" style="--tint:${p.tint}">
         <div class="line__info"><div class="line__name">${esc(p.en)}</div><div class="line__meta">${n} × $${PRICE} = <b>$${n * PRICE}</b></div></div>
         <div class="qty"><button type="button" data-q="-1" data-id="${id}" aria-label="إنقاص ${esc(p.en)}">−</button><output>${n}</output><button type="button" data-q="1" data-id="${id}" aria-label="زيادة ${esc(p.en)}">+</button></div>
       </li>`;
@@ -313,44 +332,70 @@
     }
   }
 
-  /* ---------- hero showcase ---------- */
-  const stage = $('#stage'), dotsEl = $('#showDots'), sc = $('#showcase');
-  const slides = [{ id: null, en: 'The Collection', insp: '٩ عطور تحاكي العالمية' },
-    ...PRODUCTS.filter((p) => p.insp).map((p) => ({ id: p.id, en: p.en, insp: `مستوحى من ${p.insp}` }))];
-  slides.slice(1).forEach((s) => {
-    const im = document.createElement('img');
-    im.className = 'slide'; im.src = IMG(s.id); im.alt = `${s.en} من إيلورا`; im.loading = 'lazy'; im.width = 1000; im.height = 1000;
-    stage.appendChild(im);
-  });
-  const slideEls = [...stage.querySelectorAll('.slide')];
-  dotsEl.innerHTML = slides.map((s, i) => `<button type="button" role="tab" aria-label="${esc(s.en)}" aria-selected="${i === 0}" data-i="${i}"></button>`).join('');
-  let cur = 0, timer = 0;
-  function go(i) {
-    cur = (i + slides.length) % slides.length;
-    slideEls.forEach((el, k) => el.classList.toggle('is-on', k === cur));
-    dotsEl.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-selected', String(k === cur)));
-    sc.classList.add('swap');
-    setTimeout(() => { $('#showEn').textContent = slides[cur].en; $('#showInsp').textContent = slides[cur].insp; sc.classList.remove('swap'); }, 300);
-  }
-  const autoplay = () => { clearInterval(timer); if (!reduce) timer = setInterval(() => go(cur + 1), 3800); };
-  dotsEl.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { go(+b.dataset.i); autoplay(); } });
-  $('#showOpen').onclick = () => { const s = slides[cur]; if (s.id) openModal(s.id); else $('#shop').scrollIntoView({ behavior: 'smooth' }); };
-  // swipe on the arch
-  let sx = null;
-  $('#arch').addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
-  $('#arch').addEventListener('touchend', (e) => {
-    if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
-    if (Math.abs(dx) > 40) { go(cur + (dx > 0 ? 1 : -1)); autoplay(); }
-  });
-  // gentle tilt on desktop
-  const art = $('.hero__art');
-  if (window.matchMedia('(hover: hover)').matches) {
-    art.addEventListener('pointermove', (e) => {
-      const r = art.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-      $('#arch').style.setProperty('--ry', `${x * 10}deg`); $('#arch').style.setProperty('--rx', `${-y * 8}deg`);
+  /* ---------- hero stage: rotating vitrine ---------- */
+  const ring = $('#ring'), stageEl = $('#stage'), cap = $('#capBtn');
+  const lineup = PRODUCTS.filter((p) => p.insp);
+  const N = lineup.length;
+  ring.innerHTML = lineup.map((p, i) => `<figure class="bottle" data-i="${i}"><img src="${BTL(p.id)}" alt="${esc(p.en)}" ${i < 3 || i > N - 3 ? '' : 'loading="lazy"'} draggable="false"></figure>`).join('');
+  const bEls = [...ring.children];
+  let pos = 0, target = 0, front = -1, lastT = 0, idle = 0, dragging = false;
+  const wrapI = (i) => ((i % N) + N) % N;
+  function layout() {
+    const w = stageEl.clientWidth, spread = Math.min(w * 0.5, 440);
+    bEls.forEach((el, i) => {
+      let d = i - pos; d -= Math.round(d / N) * N;           // shortest signed distance
+      const a = d * (Math.PI * 2 / N) * 0.9;
+      const x = Math.sin(a) * spread, depth = (Math.cos(a) + 1) / 2;  // 1 front … 0 back
+      const s = 0.38 + depth * 0.62;
+      el.style.transform = `translateX(calc(-50% + ${-x}px)) scale(${s})`;
+      el.style.zIndex = String(Math.round(depth * 100));
+      el.style.opacity = String(Math.max(0, depth * 1.25 - 0.15));
+      el.style.filter = `brightness(${0.45 + depth * 0.55}) saturate(${0.7 + depth * 0.3}) blur(${(1 - depth) * 1.6}px)`;
     });
-    art.addEventListener('pointerleave', () => { $('#arch').style.setProperty('--ry', '0deg'); $('#arch').style.setProperty('--rx', '0deg'); });
+    const f = wrapI(Math.round(pos));
+    if (f !== front) {
+      front = f;
+      bEls.forEach((el, i) => el.classList.toggle('is-front', i === f));
+      cap.classList.add('swap');
+      clearTimeout(cap._t);
+      cap._t = setTimeout(() => {
+        $('#capEn').textContent = lineup[f].en; $('#capInsp').textContent = `مستوحى من ${lineup[f].insp}`; cap.classList.remove('swap');
+      }, 220);
+    }
   }
+  function tick(t) {
+    const dt = Math.min(64, t - (lastT || t)); lastT = t;
+    if (!dragging) {
+      idle += dt;
+      if (!reduce && idle > 3200) { target = Math.round(target) + 1; idle = 0; }
+      pos += (target - pos) * Math.min(1, dt / 160);
+    }
+    layout();
+    requestAnimationFrame(tick);
+  }
+  const nudge = (n) => { target = Math.round(target) + n; idle = 0; };
+  $('#next').onclick = () => nudge(1);
+  $('#prev').onclick = () => nudge(-1);
+  cap.onclick = () => openModal(lineup[wrapI(Math.round(pos))].id);
+  ring.addEventListener('click', (e) => { const b = e.target.closest('.bottle.is-front'); if (b && !moved) openModal(lineup[+b.dataset.i].id); });
+  let sx = 0, sp = 0, moved = false;
+  stageEl.addEventListener('pointerdown', (e) => { dragging = true; moved = false; sx = e.clientX; sp = pos; stageEl.setPointerCapture(e.pointerId); });
+  stageEl.addEventListener('pointermove', (e) => {
+    if (!dragging) return; const dx = e.clientX - sx; if (Math.abs(dx) > 6) moved = true;
+    pos = sp + dx / Math.max(120, stageEl.clientWidth * 0.18); target = pos;
+  });
+  const endDrag = (e) => {
+    if (!dragging) return; dragging = false; target = Math.round(pos); idle = 0;
+    if (!moved) { const el = document.elementFromPoint(e.clientX, e.clientY)?.closest('.bottle'); if (el) { const i = +el.dataset.i; let d = i - pos; d -= Math.round(d / N) * N; if (Math.abs(d) < .5) openModal(lineup[i].id); else target = Math.round(pos + d); } }
+  };
+  stageEl.addEventListener('pointerup', endDrag);
+  stageEl.addEventListener('pointercancel', endDrag);
+  document.addEventListener('keydown', (e) => {
+    if (!$('#modal').hidden || !$('#drawer').hidden) return;
+    if (document.activeElement?.closest?.('.hero')) { if (e.key === 'ArrowLeft') nudge(1); if (e.key === 'ArrowRight') nudge(-1); }
+  });
+  layout();
+  requestAnimationFrame(tick);
 
   /* ---------- scent quiz ---------- */
   const QUIZ = [
@@ -393,7 +438,7 @@
     const ranked = PRODUCTS.filter((p) => p.m).map((p) => [p, score(p)]).sort((a, b) => b[1] - a[1]);
     const best = ranked[0][0], pct = Math.round(70 + (ranked[0][1] / 7.05) * 29);
     qPanel.innerHTML = `<div class="q__result" style="--tint:${best.tint}">
-        <img src="${IMG(best.id)}" alt="${esc(best.en)}">
+        <span class="q__img"><img src="${BTL(best.id)}" alt="${esc(best.en)}"></span>
         <div><span class="q__match">تطابق ${pct}%</span><p class="pname">${esc(best.en)}</p>
         <p>مستوحى من <b>${esc(best.insp)}</b></p><p>${esc(best.desc)}</p></div></div>
       <div class="q__actions">
@@ -423,6 +468,11 @@
     }), { rootMargin: '0px 0px -8% 0px' });
     els.forEach((el) => { if (el.getBoundingClientRect().top > innerHeight) io.observe(el); });
   }
+
+  /* ---------- floating IG button appears after the hero ---------- */
+  const fab = $('.fab');
+  const fabCheck = () => fab.classList.toggle('is-away', window.scrollY < innerHeight * 0.6);
+  window.addEventListener('scroll', fabCheck, { passive: true }); fabCheck();
 
   /* ---------- deep link #p-<id> ---------- */
   const openFromHash = () => { const m = location.hash.match(/^#p-([\w-]+)$/); if (m && byId[m[1]]) openModal(m[1]); };
