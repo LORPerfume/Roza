@@ -27,7 +27,7 @@
     </a>
     <nav class="topnav" aria-label="أقسام الموقع">
       <a href="#shop">المتجر</a>
-      <a href="#finder">اختاري عطرك</a>
+      <a href="#quiz">اختبار العطر</a>
       <a href="#how">طريقة الطلب</a>
     </nav>
     <button class="cartbtn" id="cartOpen" type="button" aria-label="فتح السلة">
@@ -64,9 +64,19 @@
         </dl>
       </div>
       <figure class="hero__art">
-        <div class="arch">
-          <img src="assets/img/collection.webp" alt="مجموعة عطور الشعر التسعة من إيلورا مع العطور العالمية التي تحاكيها" width="1000" height="1000" fetchpriority="high">
+        <div class="arch" id="arch">
+          <div class="arch__stage" id="stage">
+            <img class="slide is-on" src="assets/img/collection.webp" alt="مجموعة عطور الشعر التسعة من إيلورا مع العطور العالمية التي تحاكيها" width="1000" height="1000" fetchpriority="high">
+          </div>
+          <span class="arch__shine" aria-hidden="true"></span>
         </div>
+        <figcaption class="showcase" id="showcase" aria-live="polite">
+          <button class="showcase__open" type="button" id="showOpen">
+            <span class="showcase__en" id="showEn">The Collection</span>
+            <span class="showcase__insp" id="showInsp">٩ عطور تحاكي العالمية</span>
+          </button>
+          <div class="showcase__dots" id="showDots" role="tablist" aria-label="تنقّلي بين العطور"></div>
+        </figcaption>
         <div class="seal" aria-hidden="true">
           <svg viewBox="0 0 120 120"><defs><path id="circ" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#circ">HAIR PERFUME · 200 ML · ELURA MILANO · </textPath></text></svg>
           <span>20$</span>
@@ -101,6 +111,19 @@
       <span class="benefit__k">48h</span>
       <h3>فوحان يدوم</h3>
       <p>رائحة تلحقك طول اليوم وأكثر.</p>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="quiz" id="quiz">
+    <div class="wrap quiz__grid">
+      <div class="quiz__intro">
+        <p class="eyebrow">Scent Finder</p>
+        <h2>ثلاث أسئلة،<br>وعطرك بيلاقيكِ</h2>
+        <p>جاوبي بسرعة ومنقلّك أي عطر من إيلورا بيشبهك أكتر.</p>
+        <div class="quiz__progress" aria-hidden="true"><i id="qBar"></i></div>
+      </div>
+      <div class="quiz__panel" id="qPanel"></div>
     </div>
   </section>
 
@@ -173,6 +196,9 @@
   <div class="modal__scrim" data-close></div>
   <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="mTitle">
     <button class="iconbtn modal__x" type="button" data-close aria-label="إغلاق">✕</button>
+    <button class="iconbtn modal__share" type="button" id="mShare" aria-label="نسخ رابط المنتج">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
+    </button>
     <div class="modal__media"><img id="mImg" alt=""></div>
     <div class="modal__body">
       <p class="pname" id="mEn"></p>
@@ -180,6 +206,7 @@
       <p class="insp" id="mInsp"></p>
       <p id="mDesc"></p>
       <ul class="notes" id="mNotes"></ul>
+      <div class="meters" id="mMeters" aria-label="طابع الرائحة"></div>
       <ul class="specs" id="mSpecs"></ul>
       <div class="modal__buy">
         <div class="qty" aria-label="الكمية">
@@ -228,6 +255,15 @@
       </details>
     </footer>
   </aside>
+</div>
+
+<!-- Sticky cart bar (phones) -->
+<div class="cartbar" id="cartbar" hidden>
+  <button type="button" class="cartbar__btn" id="cartbarBtn">
+    <span class="cartbar__count"><b id="cbCount">0</b> قطع</span>
+    <span class="cartbar__total" id="cbTotal">$0</span>
+    <span class="cartbar__cta">عرض السلة ←</span>
+  </button>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
